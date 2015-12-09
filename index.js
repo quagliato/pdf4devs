@@ -66,7 +66,7 @@ expressApp.post('/:functionName', function(request,response){
   
   switch (functionName) {
     case "pdf":
-      pdfFromURL(data.url, "/home/quagliato/www/pdf4devs/pdfs", data.pageSize, undefined, function(err, filePath){
+      pdfFromURL(data.url, "/pdfs", data.pageSize, undefined, function(err, filePath){
         if (err) {
           response.status(400).end(JSON.stringify(err));
         } else {
