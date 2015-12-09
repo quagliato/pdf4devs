@@ -40,7 +40,7 @@ expressApp.get('/', function(request, response, body) {
   fs.readFile('README.html', 'utf8', function(err, data) {
     if (err) {
       console.log(err);
-      response.status(500).end(JSON.stringify({'status':'ERROR','description':'Couldn\'t process your request.'}));
+      response.status(500).end(JSON.stringify({"status":"ERROR","description":"Couldn't process your request."}));
     } else {
       response.end(data);
     }
@@ -63,27 +63,19 @@ expressApp.post('/:functionName', function(request,response){
       data                   = JSON.parse(Object.keys(request.body)[0]);
     }
   }
-
-  console.log("***************************************************************");
-  console.log(moment().format());
-  console.log("  function: " + functionName);
-  console.log("parameters:");
-  console.log(data);
-
+  
   switch (functionName) {
     case "pdf":
       pdfFromURL(data.url, "/home/quagliato/www/pdf4devs/pdfs", data.pageSize, undefined, function(err, filePath){
-        console.log("finished");
         if (err) {
           response.status(400).end(JSON.stringify(err));
         } else {
-          console.log("pdf path: " + filePath);
           response.status(200).type("pdf").sendFile(filePath);
         }
       });
       break;
     default:
-      response.status(404).end("unidentified request");
+      response.status(404).end(JSON.stringify({"status":"ERROR", "description":"Unknown request."}));
   }
 });
 
