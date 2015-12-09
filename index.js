@@ -5,6 +5,7 @@ require('newrelic');
 
 bodyParser               = require("./node_modules/body-parser/index.js");
 express                  = require("./node_modules/express/index.js");
+fs                       = requite("fs");
 moment                   = require("./node_modules/moment/moment.js");
 pdfFromURL               = require("./pdf-from-url.js");
 sha1                     = require("./node_modules/sha1/sha1.js");
@@ -16,6 +17,43 @@ expressApp.use(bodyParser.json());
 expressApp.use(bodyParser.urlencoded({
   extended: true
 }));
+
+/****************************************************************************/
+/* HEALTH CHECK */
+/****************************************************************************/
+expressApp.get('/status', function(request, response){
+  response.status(200).end(JSON.stringify({"status":"OK"}));
+});
+
+expressApp.post('/status', function(request, response){
+  response.status(200).end(JSON.stringify({"status":"OK"}));
+});
+
+/***************************************************************************/
+/* GET PAGE */
+/***************************************************************************/
+
+app.get('/', function(request, response, body) {
+  response.set('Access-Control-Allow-Origin', '*');
+  response.set('Content-Type', 'text/html');
+
+  var fs = require('fs');
+  fs.readFile('README.html', 'utf8', function(err, data) {
+    if (err) {
+      console.log(err);
+      response.status(500).end(JSON.stringify({'status':'ERROR','description':'Couldn\'t process your request.'}));
+    } else {
+      var returnStr = data;
+      returnStr += "\n\n" + JSON.stringify({"status": "OK"});
+
+      response.end(returnStr);
+    }
+  });
+});
+
+/**************************************************************************/
+/* PDF */
+/**************************************************************************/
 
 expressApp.post('/:functionName', function(request,response){
   response.header("Access-Control-Allow-Origin", "*");
@@ -37,9 +75,6 @@ expressApp.post('/:functionName', function(request,response){
   console.log(data);
 
   switch (functionName) {
-    case "status":
-      response.status(200).end(JSON.stringify({"status":"OK"}));
-      break
     case "pdf":
       pdfFromURL(data.url, "/home/quagliato/www/pdf4devs/pdfs", data.pageSize, undefined, function(err, filePath){
         console.log("finished");
@@ -57,4 +92,3 @@ expressApp.post('/:functionName', function(request,response){
 });
 
 expressApp.listen(3100);
-
