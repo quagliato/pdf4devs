@@ -21,10 +21,14 @@ expressApp.use(bodyParser.urlencoded({
 /* HEALTH CHECK */
 /****************************************************************************/
 expressApp.get('/status', function(request, response){
+  response.set('Access-Control-Allow-Origin', '*');
+  response.set('Content-Type', 'text/json');
   response.status(200).end(JSON.stringify({"status":"OK"}));
 });
 
 expressApp.post('/status', function(request, response){
+  response.set('Access-Control-Allow-Origin', '*');
+  response.set('Content-Type', 'text/json');
   response.status(200).end(JSON.stringify({"status":"OK"}));
 });
 
@@ -34,14 +38,15 @@ expressApp.post('/status', function(request, response){
 
 expressApp.get('/', function(request, response, body) {
   response.set('Access-Control-Allow-Origin', '*');
-  response.set('Content-Type', 'text/html');
 
   var fs = require('fs');
   fs.readFile('README.html', 'utf8', function(err, data) {
     if (err) {
       console.log(err);
+      response.set('Content-Type', 'text/json');
       response.status(500).end(JSON.stringify({"status":"ERROR","description":"Couldn't process your request."}));
     } else {
+      response.set('Content-Type', 'text/html');
       response.end(data);
     }
   });
@@ -68,6 +73,8 @@ expressApp.post('/:functionName', function(request,response){
     case "pdf":
       pdfFromURL(data.url, "/www/quagliato-pdf4devs/pdfs", data.pageSize, undefined, function(err, filePath){
         if (err) {
+          response.set('Access-Control-Allow-Origin', '*');
+          response.set('Content-Type', 'text/json');
           response.status(400).end(JSON.stringify(err));
         } else {
           response.status(200).type("pdf").sendFile(filePath);
@@ -75,6 +82,8 @@ expressApp.post('/:functionName', function(request,response){
       });
       break;
     default:
+      response.set('Access-Control-Allow-Origin', '*');
+      response.set('Content-Type', 'text/json');
       response.status(404).end(JSON.stringify({"status":"ERROR", "description":"Unknown request."}));
   }
 });
