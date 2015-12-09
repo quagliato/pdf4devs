@@ -5,7 +5,6 @@ require('newrelic');
 
 bodyParser               = require("./node_modules/body-parser/index.js");
 express                  = require("./node_modules/express/index.js");
-fs                       = require("fs");
 moment                   = require("./node_modules/moment/moment.js");
 pdfFromURL               = require("./pdf-from-url.js");
 sha1                     = require("./node_modules/sha1/sha1.js");
@@ -33,7 +32,7 @@ expressApp.post('/status', function(request, response){
 /* GET PAGE */
 /***************************************************************************/
 
-app.get('/', function(request, response, body) {
+expressApp.get('/', function(request, response, body) {
   response.set('Access-Control-Allow-Origin', '*');
   response.set('Content-Type', 'text/html');
 
@@ -43,10 +42,7 @@ app.get('/', function(request, response, body) {
       console.log(err);
       response.status(500).end(JSON.stringify({'status':'ERROR','description':'Couldn\'t process your request.'}));
     } else {
-      var returnStr = data;
-      returnStr += "\n\n" + JSON.stringify({"status": "OK"});
-
-      response.end(returnStr);
+      response.end(data);
     }
   });
 });
