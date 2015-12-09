@@ -5,7 +5,7 @@ require('newrelic');
 
 bodyParser               = require("./node_modules/body-parser/index.js");
 express                  = require("./node_modules/express/index.js");
-fs                       = requite("fs");
+fs                       = require("fs");
 moment                   = require("./node_modules/moment/moment.js");
 pdfFromURL               = require("./pdf-from-url.js");
 sha1                     = require("./node_modules/sha1/sha1.js");
