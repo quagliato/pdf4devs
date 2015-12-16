@@ -7,7 +7,7 @@ PDF.
 
 ## How to use?
 
-Make an request to *http://pdf4devs.quagliato.me/pdf* sending a *JSON* with the 
+Make an request to *http://pdf4devs.com/pdf* sending a *JSON* with the 
 **url** and the **pageSize** (A3, A4, A5 etc.) that you we'll create the PDF
 and return it to you.
 
@@ -21,7 +21,7 @@ atempt and return the first file;
 
 ## Status
 If you're seeing this, everything is OK. But you make a GET request to
-http://pdf4devs.quagliato.me/status and we'll return a JSON like this
+http://pdf4devs.com/status and we'll return a JSON like this
 ```
 {"status":"OK"}
 ```
@@ -32,7 +32,7 @@ OR like this
 
 ## Example
 
-$ curl -XPOST -H'Content-type:application/json' http://pdf4devs.quagliato.me/pdf -d'{"url":"http://google.com", "pageSize":"A4"}' > google.pdf
+$ curl -XPOST -H'Content-type:application/json' http://pdf4devs.com/pdf -d'{"url":"http://google.com", "pageSize":"A4"}' > google.pdf
 
 ## Get in touch
 E-mail me at [eduardo@quagliato.me](mailto:eduardo@quagliato.me)
