@@ -71,7 +71,7 @@ expressApp.post('/:functionName', function(request,response){
   
   switch (functionName) {
     case "pdf":
-      pdfFromURL(data.url, "/www/quagliato-pdf4devs/pdfs", data.pageSize, undefined, function(err, filePath){
+      pdfFromURL(data.url, "/www/pdf4devs/pdfs", data.pageSize, undefined, function(err, filePath){
         if (err) {
           response.set('Access-Control-Allow-Origin', '*');
           response.set('Content-Type', 'text/json');
