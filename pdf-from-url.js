@@ -39,7 +39,7 @@ module.exports = function(url, storePath, pageSize, margins, callback){
           if (fs.lstatSync(fileFullPath)) {
             callback(undefined, fileFullPath);
           } else {
-            thrown new Exception('file not found');
+            throw 'File not found';
           }
 
         } catch (err) {
