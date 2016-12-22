@@ -24,15 +24,25 @@ module.exports = function(url, storePath, pageSize, margins, callback){
       output: fileFullPath
     };
 
+    var exists = true;
     try {
       if (fs.lstatSync(fileFullPath)) {
         callback(undefined, fileFullPath);
       }
     } catch (exception) {
+      exists = false;
+    }
+
+    if (exists === false) {
       wkhtmltopdf(url, options, function(code, signal){
-        if (fs.lstatSync(fileFullPath)) {
-          callback(undefined, fileFullPath);
-        } else {
+        try {
+          if (fs.lstatSync(fileFullPath)) {
+            callback(undefined, fileFullPath);
+          } else {
+            thrown new Exception('file not found');
+          }
+
+        } catch (err) {
           callback({"code":"002", "description":"Couldn't create PDF file."});
         }
       });
