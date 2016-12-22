@@ -35,6 +35,7 @@ module.exports = function(url, storePath, pageSize, margins, callback){
 
     if (exists === false) {
       wkhtmltopdf(url, options, function(code, signal){
+        console.log(code, signal);
         try {
           if (fs.lstatSync(fileFullPath)) {
             callback(undefined, fileFullPath);
