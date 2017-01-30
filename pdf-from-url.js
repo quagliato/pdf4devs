@@ -26,7 +26,7 @@ module.exports = function(url, storePath, pageSize, margins, callback){
   });
     
   const filename = sha1(url + moment().format('YYYY-MM-DD-hh')) + '.pdf';
-  var fileFullPath = path + '' + filename;
+  var fileFullPath = path + '/' + filename;
 
   fs.readFile(fileFullPath, function(err, data){
     if (!err) return callback(undefined, fileFullPath);

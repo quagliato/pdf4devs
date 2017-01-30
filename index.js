@@ -16,6 +16,8 @@ expressApp.use(bodyParser.urlencoded({
   extended: true
 }));
 
+expressApp.use('/pdfs', express.static('private-eyes'));
+
 /****************************************************************************/
 /* HEALTH CHECK */
 /****************************************************************************/
