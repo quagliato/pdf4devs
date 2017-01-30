@@ -1,16 +1,15 @@
-// author: eduardo@quagliato.me
-//   date: 2015-11-13 (friday, muahaha!)
+// pdf4devs
+// 2015-11-13, Curitiba - Brazil
+// Author: Eduardo Quagliato <eduardo@quagliato.me>
 
-require('newrelic');
+const bodyParser             = require('body-parser');
+const express                = require('express');
+const fs                     = require('fs');
+const markdown               = require('markdown').markdown;
+const moment                 = require('moment');
+const pdfFromURL             = require('./pdf-from-url.js');
 
-bodyParser               = require("./node_modules/body-parser/index.js");
-express                  = require("./node_modules/express/index.js");
-moment                   = require("./node_modules/moment/moment.js");
-pdfFromURL               = require("./pdf-from-url.js");
-sha1                     = require("./node_modules/sha1/sha1.js");
-util                     = require("util");
-
-var expressApp = express();
+const expressApp = express();
 
 expressApp.use(bodyParser.json());
 expressApp.use(bodyParser.urlencoded({
@@ -20,72 +19,62 @@ expressApp.use(bodyParser.urlencoded({
 /****************************************************************************/
 /* HEALTH CHECK */
 /****************************************************************************/
-expressApp.get('/status', function(request, response){
-  response.set('Access-Control-Allow-Origin', '*');
-  response.set('Content-Type', 'text/json');
-  response.status(200).end(JSON.stringify({"status":"OK"}));
-});
-
-expressApp.post('/status', function(request, response){
-  response.set('Access-Control-Allow-Origin', '*');
-  response.set('Content-Type', 'text/json');
-  response.status(200).end(JSON.stringify({"status":"OK"}));
+expressApp.all('/status', function(req, res){
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Content-Type', 'text/json');
+  res.status(200).json({
+    status: 'OK',
+    description: 'Lock and load!'
+  });
 });
 
 /***************************************************************************/
 /* GET PAGE */
 /***************************************************************************/
+expressApp.get('/', function(req, res) {
+  res.set('Access-Control-Allow-Origin', '*');
 
-expressApp.get('/', function(request, response, body) {
-  response.set('Access-Control-Allow-Origin', '*');
-
-  var fs = require('fs');
-  fs.readFile('README.html', 'utf8', function(err, data) {
+  fs.readFile('README.md', 'utf8', function(err, data) {
     if (err) {
       console.log(err);
-      response.set('Content-Type', 'text/json');
-      response.status(500).end(JSON.stringify({"status":"ERROR","description":"Couldn't process your request."}));
-    } else {
-      response.set('Content-Type', 'text/html');
-      response.end(data);
+      return res.status(500).json({
+        status: 'ERROR',
+        description: 'Couldn\'t process your request.'
+      });
     }
+
+    res.status(200).type('text/html').send(markdown.toHTML(data));
   });
 });
 
 /**************************************************************************/
 /* PDF */
 /**************************************************************************/
+expressApp.post('/pdf', function(req, res){
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
 
-expressApp.post('/:functionName', function(request,response){
-  response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Headers", "X-Requested-With");
+  const payload = req.body;
 
-  var functionName           = request.params.functionName;
-  var data                   = request.body;
-
-  if (request.headers.hasOwnProperty("content-type")) {
-    if (request.headers["content-type"] != "application/json") {
-      data                   = JSON.parse(Object.keys(request.body)[0]);
+  if (req.headers.hasOwnProperty("content-type")) {
+    if (req.headers["content-type"] != "application/json") {
+      payload                   = JSON.parse(Object.keys(req.body)[0]);
     }
   }
-  
-  switch (functionName) {
-    case "pdf":
-      pdfFromURL(data.url, "/www/pdf4devs/pdfs", data.pageSize, undefined, function(err, filePath){
-        if (err) {
-          response.set('Access-Control-Allow-Origin', '*');
-          response.set('Content-Type', 'text/json');
-          response.status(400).end(JSON.stringify(err));
-        } else {
-          response.status(200).type("pdf").sendFile(filePath);
-        }
-      });
-      break;
-    default:
-      response.set('Access-Control-Allow-Origin', '*');
-      response.set('Content-Type', 'text/json');
-      response.status(404).end(JSON.stringify({"status":"ERROR", "description":"Unknown request."}));
-  }
+
+  pdfFromURL(payload.url, __dirname + '/pdfs', payload.pageSize, undefined, function(err, filePath){
+    console.log(
+      moment().format('YYYY-MM-DD HH:mm:ss.SSS Z') + 
+      ' [' + (req.headers['x-forwarded-for'] || req.connection.remoteAddress) + '] ' +
+      (err ? JSON.stringify(err) : filePath)
+    );
+
+    if (err) {
+      return res.status(400).json(err);
+    }
+
+    res.status(200).type("pdf").sendFile(filePath);
+  });
 });
 
 expressApp.listen(3100);

@@ -1,0 +1,37 @@
+{
+  "name": "pdf4devs",
+  "version": "0.0.1",
+  "description": "It creates PDFs from URLs",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "forever-monitor": "^1.7.0",
+    "markdown": "^0.5.0",
+    "moment": "^2.10.6",
+    "newrelic": "^1.24.0",
+    "sha1": "^1.1.1",
+    "valid-url": "^1.0.9",
+    "wkhtmltopdf": "^0.1.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quagliato/pdf4devs.git"
+  },
+  "keywords": [
+    "pdf",
+    "webservice",
+    "express"
+  ],
+  "author": "Eduardo Quagliato <eduardo@quagliato.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/quagliato/pdf4devs/issues"
+  },
+  "homepage": "https://github.com/quagliato/pdf4devs#readme"
+}
