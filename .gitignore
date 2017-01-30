@@ -2,3 +2,4 @@ pdfs
 pdfs/*
 node_modules/*
 *.log
+*.pdf

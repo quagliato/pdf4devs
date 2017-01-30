@@ -25,7 +25,7 @@ module.exports = function(url, storePath, pageSize, margins, callback){
     description: 'Page size not accepted.'
   });
     
-  const filename = sha1(url + moment().format('YYYY-MM-DD-hh-mm')) + '.pdf';
+  const filename = sha1(url + moment().format('YYYY-MM-DD-hh')) + '.pdf';
   var fileFullPath = path + '' + filename;
 
   fs.readFile(fileFullPath, function(err, data){
