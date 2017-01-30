@@ -16,7 +16,7 @@ expressApp.use(bodyParser.urlencoded({
   extended: true
 }));
 
-expressApp.use('/pdfs', express.static('private-eyes'));
+expressApp.use('/private-eyes', express.static('pdfs'));
 
 /****************************************************************************/
 /* HEALTH CHECK */
