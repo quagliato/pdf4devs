@@ -82,7 +82,7 @@ expressApp.post('/pdf', function(req, res){
 /**************************************************************************/
 /* PDF */
 /**************************************************************************/
-expressApp.get('/pdf/:url?', function(req, res){
+expressApp.get('/pdf/:url/:pageSize?', function(req, res){
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
 
@@ -90,7 +90,7 @@ expressApp.get('/pdf/:url?', function(req, res){
   const url = req.params.url;
   
   const pageSize = 'A4';
-  if (req.query.page_size) pageSize = req.query.page_size;
+  if (req.params.pageSize) pageSize = req.params.pageSize;
 
   pdfFromURL(url, __dirname + '/pdfs', pageSize, undefined, function(err, filePath){
     console.log(
