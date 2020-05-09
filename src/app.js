@@ -27,6 +27,8 @@ expressApp.use((req, res, next) => {
   next()
 })
 
+routes(expressApp)
+
 expressApp.use((err, req, res, next) => {
   console.error(err)
   return res.status(err.statusCode || 500).json({
@@ -35,7 +37,5 @@ expressApp.use((err, req, res, next) => {
     description: err.code ? err.message : 'Server Internal Error'
   })
 })
-
-routes(expressApp)
 
 expressApp.listen(PORT || 3100)
