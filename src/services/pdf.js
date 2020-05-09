@@ -21,7 +21,6 @@ const fromURL = async (url, pageSize) => {
 
   const filename = sha1(url + moment().format('YYYY-MM-DD-hh')) + '.pdf';
   const file = `${path.dirname(require.main.filename)}/pdfs/${filename}`
-  console.log(file)
 
   if (fs.existsSync(file)) return file
 
@@ -36,7 +35,6 @@ const fromURL = async (url, pageSize) => {
   
   await callWkhtmlToPdf(url, options)
 
-  console.log(file)
   if (fs.existsSync(file)) return file
 
   throw new Error('Could not create your PDF file.')
@@ -45,7 +43,6 @@ const fromURL = async (url, pageSize) => {
 const callWkhtmlToPdf = (url, options) => {
   return new Promise((resolve) => {
     wkhtmltopdf(url, options, (code, signal) => {
-      console.log(code, signal)
       console.log('wkthtmltopdf result', url, options.output, code, signal)
       return resolve()
     })
