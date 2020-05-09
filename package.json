@@ -1,6 +1,6 @@
 {
   "name": "pdf4devs",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "It creates PDFs from URLs",
   "main": "index.js",
   "dependencies": {
