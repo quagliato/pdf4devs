@@ -7,9 +7,23 @@ PDF.
 
 ## How to use?
 
-Make an request to *http://pdf4devs.com/pdf* sending a **JSON** with the 
-**url** and the **pageSize** (A3, A4, A5 etc.) that you we'll create the PDF
-and return it to you.
+Make an request to *http://pdf4devs.com/pdf* sending a **url** and the 
+**pageSize** (A3, A4, A5 etc.) that you we'll create the PDF and return it to 
+you.
+
+## Example
+
+Via POST:
+
+```
+$ curl -XPOST -H'Content-type:application/json' http://pdf4devs.com/pdf -d'{"url":"http://google.com", "pageSize":"A4"}' > google.pdf
+```
+
+Via GET:
+
+```
+$ curl http://pdf4devs.com/pdf/http%3A%2F%2Fgoogle.com/A4 > google.pdf
+```
 
 ## Requirements
 - The URL must be public and without any kind of authentication;
@@ -33,12 +47,6 @@ These are the possible responses:
 If you're seeing this, everything is OK. But you can make a GET request to
 http://pdf4devs.com/status and we'll return a JSON like this
 `{"status":"OK"}` OR like this `{"status":"ERROR"}`.
-
-## Example
-
-```
-$ curl -XPOST -H'Content-type:application/json' http://pdf4devs.com/pdf -d'{"url":"http://google.com", "pageSize":"A4"}' > google.pdf
-```
 
 ## Get in touch
 E-mail me at [eduardo@quagliato.me](mailto:eduardo@quagliato.me)
