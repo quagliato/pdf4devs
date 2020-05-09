@@ -1,5 +1,4 @@
-pdfs
-pdfs/*
+pdfs/*.pdf
 node_modules/*
 *.log
 *.pdf
