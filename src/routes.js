@@ -7,5 +7,6 @@ module.exports = (app) => {
   app.all('/', index)
   app.all('/status', status)
   app.post('/pdf', postPdf)
+  app.get('/pdf', index)
   app.get('/pdf/:url/:pageSize?', getPdf)
 }
